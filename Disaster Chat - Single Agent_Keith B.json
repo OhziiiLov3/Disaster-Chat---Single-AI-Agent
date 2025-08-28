@@ -1,0 +1,214 @@
+{
+  "name": "Disaster Chat - Single Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi, I'm Disaster Bot. I will check for disaster related news for you and suggest recommended actions to take to ensure your safety.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8776001d-9cb5-4ad5-ad0d-db77aadfde08",
+      "name": "Chat Trigger",
+      "webhookId": "8daa9cb8-53fe-4888-92dc-ef9159ae5363"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant who is an expert in Disaster Response and Recovery. When you receive a message, use the configured tools to get metadata from disaster-related RSS feeds and location data as context. Summarize the data retrieved from the tools and provide that as a response.",
+          "returnIntermediateSteps": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        0
+      ],
+      "id": "a5bc243a-b66b-4437-a95e-9a3abfd5f7a9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        208
+      ],
+      "id": "5bcf4293-5171-479f-9b21-2e90122d0c28",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "heKFno7sII5Ecx7W",
+          "name": "OpenAi Disaster Response"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        208
+      ],
+      "id": "e3ef7d68-293c-4b0c-8ea9-9e61b65aa67a",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "YVjBLiBX0ix6jcyP",
+          "name": "PostgresDB-Kura"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to get the users general location as context for your response using their IP address.",
+        "workflowId": {
+          "__rl": true,
+          "value": "AA0dxqiTaSJPu9Lt",
+          "mode": "list",
+          "cachedResultName": "Geolocation Tool"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "ip"
+          ],
+          "schema": [
+            {
+              "id": "ip",
+              "displayName": "ip",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        224
+      ],
+      "id": "8707e15b-8e26-4f3f-9108-77abbb29ed35",
+      "name": "Geolocation"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to get information from pre-configured disaster related RSS feeds",
+        "workflowId": {
+          "__rl": true,
+          "value": "xOfC3LfIFQJ52GM4",
+          "mode": "list",
+          "cachedResultName": "Disaster News Tool"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        192
+      ],
+      "id": "ab594551-6d08-4d10-ac80-6af1d73efcc1",
+      "name": "Disaster Newsfeed"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Geolocation": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Disaster Newsfeed": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2bd4f47b-500c-4b39-9545-5eafd56b2e0e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c7a2ada7a6066dadf0792dd01b51a398208350d6b75f1382016fb9a1109b35c1"
+  },
+  "id": "CXaaXchXYxUCNjdX",
+  "tags": []
+}
