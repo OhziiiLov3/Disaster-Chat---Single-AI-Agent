@@ -22,6 +22,10 @@ Design and deploy a two-agent Slack bot that posts timely, local updates when me
   - [Natural Disasters - Past Week](https://news.google.com/rss/search?q=natural+disasters+when:7d)  
 - **Geolocation Tool (via IP address)**  
   - Find IP: [WhatIsMyIPAddress](https://whatismyipaddress.com/)  
+- **OpenWeatherAPI**  
+  - Use API KEY: [Weather API](https://openweathermap.org/api)  
+- **GnewsAPI**  
+  - Find IP: [News API](https://gnews.io/)  
 
 ### Trigger
 
