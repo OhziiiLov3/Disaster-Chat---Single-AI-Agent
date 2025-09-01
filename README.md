@@ -1,26 +1,18 @@
 # Disaster Chat - Single Agent
 ### By Keith Baskerville 
 
-## Disaster Response Chat Agent
+## Disaster Response Slack Bot Trigger
 
-![Disaster Chat Diagram](assets/DisasterResponse-workflow.png)
+![Disaster Slack Bot Diagram](assets/Disaster_Repsonse_Slack_Trigger.png)
 
 ### Description
-Build a **single-agent AI workflow** that provides news summaries about local disasters in your area. The agent will have access to tools that provide context from Google News and FEMA, as well as your general location, to provide guidance.
+Design and deploy a two-agent Slack bot that posts timely, local updates when mentioned in a designated channel:
+- Agent 1 – Disaster News Agent: uses IP-based geolocation + FEMA RSS + Google News (7-day window) to produce a concise disaster summary.
+- Agent 2 – Local News Agent: enriches with local headlines (GNews API) and current weather (OpenWeather), then posts a consolidated reply to Slack
 
 ### Objective
-Build a **ReACT-based AI chat agent** that:
 
-1. Takes a **user prompt** in a basic chat UI.  
-2. Infers approximate location **via IP** (custom Geolocation tool).  
-3. **Pulls recent disaster info** from FEMA Major/Fire RSS feeds and Google News (last 7 days).  
-4. **Stores conversation memory** in a database.  
-5. **Returns a step-by-step**, location-aware summary grounded in those sources.  
 
-### Inputs
-- Text prompt from a user via chat UI  
-### Outputs
-- A response to your query using information from the tools provided  
 ### Tools
 - **Natural disaster RSS feed**  
 - **FEMA**:  
@@ -32,4 +24,4 @@ Build a **ReACT-based AI chat agent** that:
   - Find IP: [WhatIsMyIPAddress](https://whatismyipaddress.com/)  
 
 ### Trigger
-A basic chat interface to trigger the agent’s response.
+
