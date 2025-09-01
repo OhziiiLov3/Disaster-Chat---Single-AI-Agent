@@ -1,4 +1,4 @@
-# Disaster Chat - Single Agent
+# Disaster Slack Bot Trigger - Multi-Agent
 ### By Keith Baskerville 
 
 ## Disaster Response Slack Bot Trigger
